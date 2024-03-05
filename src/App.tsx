@@ -4,7 +4,7 @@ import HomePage from './Pages/HomePage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/gyizer-todo-app">
       <Routes>
         <Route path="/" element={<HomePage />} />
       </Routes>

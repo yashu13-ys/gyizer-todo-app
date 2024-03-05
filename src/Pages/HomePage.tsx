@@ -225,7 +225,7 @@ function HomePage() {
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.97vw' }}>
                             <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
                             <div style={{ fontSize: '1.56vw', fontWeight: '400', marginTop: '-0.32vw' }}>
-                                No tasks
+                                No tasks 1122
                             </div>
                             <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
                         </div>
