@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/gyizer-todo-app/static/css/main.22b88143.css",
+    "main.js": "/gyizer-todo-app/static/js/main.f8656229.js",
+    "static/js/453.45a6f218.chunk.js": "/gyizer-todo-app/static/js/453.45a6f218.chunk.js",
+    "index.html": "/gyizer-todo-app/index.html",
+    "main.22b88143.css.map": "/gyizer-todo-app/static/css/main.22b88143.css.map",
+    "main.f8656229.js.map": "/gyizer-todo-app/static/js/main.f8656229.js.map",
+    "453.45a6f218.chunk.js.map": "/gyizer-todo-app/static/js/453.45a6f218.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.22b88143.css",
+    "static/js/main.f8656229.js"
+  ]
+}
