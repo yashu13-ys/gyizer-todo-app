@@ -19,26 +19,26 @@ function HomePage() {
 
     const [mobileView, setMobileView]: any = useState<boolean>(
         window.innerWidth <= 768
-      );
+    );
 
-      useEffect(() => {
+    useEffect(() => {
         function updateSize() {
-          if (window.innerWidth <= 768)
-            setMobileView(true);
-          else
-            setMobileView(false);
+            if (window.innerWidth <= 768)
+                setMobileView(true);
+            else
+                setMobileView(false);
         }
         window.addEventListener("resize", updateSize);
-      }, [mobileView]);
+    }, [mobileView]);
 
     const onDragEnd = (result: any) => {
-        if (!result.destination) return; // dropped outside the list
+        if (!result.destination) return;
 
-        const newItems = Array.from(taskListData);
-        const [reorderedItem] = newItems.splice(result.source.index, 1);
-        newItems.splice(result.destination.index, 0, reorderedItem);
+        const reorderedItems = Array.from(taskListData);
+        const [removed] = reorderedItems.splice(result.source.index, 1);
+        reorderedItems.splice(result.destination.index, 0, removed);
 
-        setTaskListData(newItems);
+        setTaskListData(reorderedItems);
     };
 
 
@@ -92,13 +92,16 @@ function HomePage() {
         setTaskListData(tempTaskData)
         setDeleteConfirm(false);
         setTaskItemDelete({})
+        setTaskItemEdit({})
+        setTitle("")
+        setDescription("")
     }
 
-    function upadetTaskItem(){
+    function upadetTaskItem() {
         let tempTaskData = [...taskListData]
-        let tempTaskEditItem = {...taskItemEdit}
-        for(let i=0;i<tempTaskData.length;i++){
-            if(tempTaskData[i].id == tempTaskEditItem.id){
+        let tempTaskEditItem = { ...taskItemEdit }
+        for (let i = 0; i < tempTaskData.length; i++) {
+            if (tempTaskData[i].id == tempTaskEditItem.id) {
                 tempTaskData[i].title = title;
                 tempTaskData[i].description = description;
                 tempTaskData[i].info = false;
@@ -146,111 +149,168 @@ function HomePage() {
                             }
                         }}>
                         {taskItemEdit && taskItemEdit.id ?
-                            <div style={{ fontSize: '0.91vw', fontWeight: '700', color: '#FFFFFF' }}>
+                            <div style={{ fontSize:mobileView?'15px':'0.91vw', fontWeight: '700', color: '#FFFFFF' }}>
                                 Update
                             </div>
                             :
-                            <img src={AddIcon} style={{ width: mobileView?'24px':'1.56vw', height:mobileView?'24px':'1.56vw' }} />
+                            <img src={AddIcon} style={{ width: mobileView ? '24px' : '1.56vw', height: mobileView ? '24px' : '1.56vw' }} />
                         }
                     </div>
                 </div>
 
-{!mobileView ? <>
-                {taskListData && taskListData.length > 0 ?
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <div className='taskListContainerWithTask'>
-                            <div className='taskContainer'>
-                                <Droppable key={'mainGroup-' + 1}
-                                    droppableId={`${'mainGroup-' + 1}`}
-                                    type='droppableGroup'>
-                                    {(provided) => (
-                                        <div
-                                            {...provided.droppableProps}
-                                            ref={provided.innerRef}
-                                            style={{ display: 'flex', flexDirection: 'column', gap: '2.2vw' }}
-                                        >
-                                            {taskListData.map((item: any, index: any) => (
-                                                <Draggable index={index}
-                                                    key={`drag-project-id-${item.id}`}
-                                                    draggableId={`dragprojectid-${item.id}`}
+                {!mobileView ? <>
+                    {taskListData && taskListData.length > 0 ?
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <div className='taskListContainerWithTask'>
+                                <div style={{ width: '100%' }} >
+                                    <Droppable key={'mainGroup-' + 1}
+                                        droppableId={`${'mainGroup-' + 1}`}
+                                        type='droppableGroup' direction="horizontal">
+                                        {(provided) => (
+                                            <div
+                                                {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                                className='taskContainer'
+                                            >
+                                                {taskListData.map((item: any, index: any) => (
+                                                    <Draggable index={index}
+                                                        key={`drag-task-id-${item.id}`}
+                                                        draggableId={`dragtaskid-${item.id}`}
 
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className='taskItemDiv'
-                                                        >
-                                                            <div>
-                                                                <div style={{ fontSize: '1.43vw', fontWeight: '500', color: '#F0E3CA' }}>
-                                                                    {item.title}
-                                                                </div>
-                                                                <div style={{ fontSize: '0.91vw', fontWeight: '500', color: '#F0E3CA', marginTop: '0.32vw' }}>
-                                                                    {item.description}
-                                                                </div>
-                                                            </div>
-                                                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.58vw' }}>
-                                                                {item.info ?
-                                                                    <>
-                                                                        <div className='iBtnDiv' style={taskItemEdit && taskItemEdit.id == item.id ?{background:'#A35709'}:{}} onClick={() => {setTaskItemEdit(item);setTitle(item.title);setDescription(item.description)}}>
-                                                                            <img src={EditGreyIcon} style={{ width: '0.71vw', height: '0.71vw', }} />
-                                                                        </div>
-                                                                        <div className='iBtnDiv' onClick={() => { setDeleteConfirm(true); setTaskItemDelete(item) }}>
-                                                                            <img src={AddIcon} style={{ width: '0.71vw', height: '0.71vw', transform: 'rotate(45deg)' }} />
-                                                                        </div>
-                                                                    </>
-                                                                    :
-                                                                    <div className='iBtnDiv' onClick={() => onInfoClick(item)}>
-                                                                        i
+                                                    >
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className='taskItemDiv'
+                                                            >
+                                                                <div>
+                                                                    <div style={{ fontSize: '1.43vw', fontWeight: '500', color: '#F0E3CA' }}>
+                                                                        {item.title}
                                                                     </div>
-                                                                }
+                                                                    <div style={{ fontSize: '0.91vw', fontWeight: '500', color: '#F0E3CA', marginTop: '0.32vw' }}>
+                                                                        {item.description}
+                                                                    </div>
+                                                                </div>
+                                                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.58vw' }}>
+                                                                    {item.info ?
+                                                                        <>
+                                                                            <div className='iBtnDiv' style={taskItemEdit && taskItemEdit.id == item.id ? { background: '#A35709' } : {}} onClick={() => { setTaskItemEdit(item); setTitle(item.title); setDescription(item.description) }}>
+                                                                                <img src={EditGreyIcon} style={{ width: '0.71vw', height: '0.71vw', }} />
+                                                                            </div>
+                                                                            <div className='iBtnDiv' onClick={() => { setDeleteConfirm(true); setTaskItemDelete(item) }}>
+                                                                                <img src={AddIcon} style={{ width: '0.71vw', height: '0.71vw', transform: 'rotate(45deg)' }} />
+                                                                            </div>
+                                                                        </>
+                                                                        :
+                                                                        <div className='iBtnDiv' onClick={() => onInfoClick(item)}>
+                                                                            i
+                                                                        </div>
+                                                                    }
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
+                                                        )}
+                                                    </Draggable>
+                                                ))}
 
-                                            {provided.placeholder}
+                                                {provided.placeholder}
 
-                                        </div>
-                                    )}
-                                </Droppable>
+                                            </div>
+                                        )}
+                                    </Droppable>
 
+                                </div>
+                            </div>
+                        </DragDropContext>
+                        :
+                        <div className='taskListContainer'>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.97vw' }}>
+                                <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
+                                <div style={{ fontSize: '1.56vw', fontWeight: '400', marginTop: '-0.32vw' }}>
+                                    No tasks
+                                </div>
+                                <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
                             </div>
                         </div>
-                    </DragDropContext>
+                    }
+                </>
                     :
-                    <div className='taskListContainer'>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: '0.97vw' }}>
-                            <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
-                            <div style={{ fontSize: '1.56vw', fontWeight: '400', marginTop: '-0.32vw' }}>
-                                No tasks 1122
-                            </div>
-                            <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
-                        </div>
-                    </div>
-                }
-</>
-:
-<>
-{taskListData && taskListData.length > 0 ?
-<div>
+                    <>
+                        {taskListData && taskListData.length > 0 ?
+                            <div>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <Droppable key={'mainGroup-' + 1}
+                                        droppableId={`${'mainGroup-' + 1}`}
+                                        type='droppableGroup'>
+                                        {(provided) => (
+                                            <div
+                                                {...provided.droppableProps}
+                                                ref={provided.innerRef}
+                                                className='taskContainer'
+                                            >
+                                                {taskListData.map((item: any, index: any) => (
+                                                    <Draggable index={index}
+                                                        key={`drag-task-id-${item.id}`}
+                                                        draggableId={`dragtaskid-${item.id}`}
 
-</div>
-:
-<div>
-<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 12,marginTop:60 }}>
-                            <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
-                            <div style={{ fontSize: '1.56vw', fontWeight: '400', marginTop: -5 }}>
-                                No tasks
+                                                    >
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className='taskItemDiv'
+                                                            >
+                                                                <div>
+                                                                    <div style={{ fontSize: '22px', fontWeight: '500', color: '#F0E3CA' }}>
+                                                                        {item.title}
+                                                                    </div>
+                                                                    <div style={{ fontSize: '14px', fontWeight: '500', color: '#F0E3CA', marginTop: '3' }}>
+                                                                        {item.description}
+                                                                    </div>
+                                                                </div>
+                                                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
+                                                                    {item.info ?
+                                                                        <>
+                                                                            <div className='iBtnDiv' style={taskItemEdit && taskItemEdit.id == item.id ? { background: '#A35709' } : {}} onClick={() => { setTaskItemEdit(item); setTitle(item.title); setDescription(item.description) }}>
+                                                                                <img src={EditGreyIcon} style={{ width: 11, height: 11, }} />
+                                                                            </div>
+                                                                            <div className='iBtnDiv' onClick={() => { setDeleteConfirm(true); setTaskItemDelete(item) }}>
+                                                                                <img src={AddIcon} style={{ width: 11, height: 11, transform: 'rotate(45deg)' }} />
+                                                                            </div>
+                                                                        </>
+                                                                        :
+                                                                        <div className='iBtnDiv' onClick={() => onInfoClick(item)}>
+                                                                            i
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+
+                                                {provided.placeholder}
+
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
                             </div>
-                            <div style={{ border: '0.19vw solid #FF8303', width: '4.16vw', borderRadius: '0.32vw' }}></div>
-                        </div>
-</div>
-}
-</>
-}
+                            :
+                            <div>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 15, marginTop: 60 }}>
+                                    <div style={{ border: '2px solid #FF8303', width: '64px', borderRadius: '10px' }}></div>
+                                    <div style={{ fontSize: '24px', fontWeight: '400', marginTop: -5 }}>
+                                        No tasks
+                                    </div>
+                                    <div style={{ border: '2px solid #FF8303', width: '64px', borderRadius: '10px' }}></div>
+                                </div>
+                            </div>
+                        }
+                    </>
+                }
 
                 {deletConfirm &&
                     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#0000004D', zIndex: 9 }}>
@@ -259,10 +319,10 @@ function HomePage() {
                             setTaskItemDelete({})
                         }}>
                             <div className='deleteConfirmPopUp'>
-                                <div style={{color:'#FFFFFF',fontSize:'1.17vw'}}>
+                                <div style={{ color: '#FFFFFF', fontSize:mobileView?18: '1.17vw' }}>
                                     Delete this task?
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.65vw', marginTop: '1.95vw' }}>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap:mobileView?'10px':'0.65vw', marginTop:mobileView?'20px':'1.95vw' }}>
                                     <div className='popUpBtn' onClick={() => { deleteTaskItem() }}>
                                         Yes
                                     </div>

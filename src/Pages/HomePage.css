@@ -168,6 +168,12 @@
     cursor: pointer;
 }
 
+.gridContainer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:2.27vw 3.25vw
+}
+
 
 @media only screen and (max-width: 768px) {
     .headerContainer {
@@ -237,5 +243,66 @@
     border-radius: 8px;
     cursor: pointer;
 }
-
+.taskContainer{
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-top:25px;
+    gap:16px
 }
+.taskItemDiv{
+    width: auto;
+    border: 2px solid #A35709;
+    min-height: 50px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.iBtnDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    border: 2px solid #A35709;
+    background-color: #242320;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: 'bold';
+}
+.deleteConfirmPopUp{
+    border-top: 5px solid #A35709;
+    width: 75%;
+    height: 150px;
+    padding: 20px;
+    background-color: #1B1A17;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.popUpBtn{
+    width: 64px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #FF8303;
+    background-color: #242320;
+    border-radius: 5px ;
+    font-size: 10px;
+    font-weight: 400;
+    color: '#D9D9D9';
+    cursor: pointer;
+}
+}
+
+

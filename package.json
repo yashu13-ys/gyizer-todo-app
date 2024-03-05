@@ -1,5 +1,5 @@
 {
-  "homepage" : "https://yashu13-ys.github.io/gyizer-todo-app",
+  "homepage": "https://yashu13-ys.github.io/gyizer-todo-app",
   "name": "gyizer-todo-app",
   "version": "0.1.0",
   "private": true,
@@ -12,7 +12,6 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
@@ -23,8 +22,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-beautiful-dnd": "^13.1.8"
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "gh-pages": "^6.1.1"
   }
 }
